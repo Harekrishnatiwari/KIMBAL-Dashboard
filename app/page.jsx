@@ -18,7 +18,7 @@ function toObjects(rows){if(!rows.length)return [];const heads=rows[0].map(v=>St
 async function readInput(file,role,depth=0){
  if(depth>3)throw new Error('Nested ZIP depth exceeded');const lower=file.name.toLowerCase();
  if(lower.endsWith('.csv')||lower.endsWith('.txt'))return csvParse(await file.text());
- if(lower.endsWith('.xlsx')){const {default:readXlsxFile}=await import('read-excel-file/browser');let rows;
+ if(lower.endsWith('.xlsx')){const {default:readXlsxFile}=await import('read-excel-file');let rows;
    if(role==='communication'){try{rows=await readXlsxFile(file,{sheet:'All Non Never'});}catch{rows=await readXlsxFile(file);}}
    else rows=await readXlsxFile(file);return toObjects(rows);}
  if(lower.endsWith('.zip')){const {default:JSZip}=await import('jszip');const zip=await JSZip.loadAsync(await file.arrayBuffer());let output=[];
