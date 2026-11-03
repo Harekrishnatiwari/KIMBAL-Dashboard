@@ -1,0 +1,13 @@
+node_modules/
+.next/
+out/
+.env*
+!.env.example
+*.xlsx
+*.xls
+*.zip
+*.csv
+!samples/demo_communication.csv
+*.sqlite3
+*.db
+data/
