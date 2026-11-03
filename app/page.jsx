@@ -23,7 +23,7 @@ async function readInput(file,role,depth=0){
    else rows=await readXlsxFile(file);return toObjects(rows);}
  if(lower.endsWith('.zip')){const {default:JSZip}=await import('jszip');const zip=await JSZip.loadAsync(await file.arrayBuffer());let output=[];
    for(const e of Object.values(zip.files)){if(e.dir||!/.+(\.csv|\.xlsx|\.zip)$/i.test(e.name)||e.name.includes('__MACOSX'))continue;
-     const data=await e.async('blob');const inner=new File([data],e.name,{type:data.type});output.push(...await readInput(inner,role,depth+1));if(output.length>750000)throw new Error('ZIP contains too many rows');}
+     const data=await e.async('blob');const inner=new File([data],e.name,{type:data.type});const incoming=await readInput(inner,role,depth+1);if(output.length+incoming.length>750000)throw new Error('ZIP contains too many rows');for(const row of incoming)output.push(row);}
    return output;}
  throw new Error('Supported file formats: .csv, .xlsx, .zip');
 }
